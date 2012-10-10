@@ -13,7 +13,7 @@ Add the following to your **/application/bundles.php** file:
 
 ## Usage
 
-        $$ftp = SFTP::make('ftp.example.com', 'username', 'password');
+        $ftp = SFTP::make('ftp.example.com', 'username', 'password');
 
         // connect to FTP server
         if($ftp->connect()) {
