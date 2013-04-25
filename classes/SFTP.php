@@ -312,6 +312,44 @@ class SFTP {
 	}
 
 	/**
+	 * Upload folder to server
+	 *
+	 * @param string $directory
+	 * @return bool
+	 */
+	function put_folder($directory)
+	{ 
+	    $dir = dir($directory);
+	    while(($file = $dir->read()) !== false)
+	    {
+	    	// If its a directory
+	        if(is_dir($dir->path.'/'.$file))
+	        {
+	        	// Skip system folders
+	            if (($file == '.') or ($file == '..')) continue; 
+
+	            // If the folder doesn't already exist make it and move to it
+	            if(!$this->cd($file))
+	            {
+	            	$this->mkdir($file);
+	            	$this->cd($file);
+	            }
+	            
+	            // Recursive call for subfolders and files
+	            $this->put_folder($dir->path.'/'.$file);
+
+	            // Move back up a folder
+	            $this->cd('..');
+	        }else{
+	        	// Add files into the folder
+	            $this->put($dir->path.'/'.$file, $file);
+	        } 
+	    } 
+	    $dir->close(); 
+	    return true; 
+	}
+
+	/**
 	 * Get current directory
 	 *
 	 * @return string
