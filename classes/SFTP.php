@@ -127,7 +127,7 @@ class SFTP {
 	 */
 	public function cd($directory = null) {
 		// attempt to change directory
-		if(ftp_chdir(static::$_stream, $directory)) {
+		if(@ftp_chdir(static::$_stream, $directory)) {
 			// success
 			return true;
 		// fail
@@ -146,7 +146,7 @@ class SFTP {
 	 */
 	public function chmod($permissions = 0, $remote_file = null) {
 		// attempt chmod
-		if(ftp_chmod(static::$_stream, $permissions, $remote_file)) {
+		if(@ftp_chmod(static::$_stream, $permissions, $remote_file)) {
 			// success
 			return true;
 		// failed
@@ -187,7 +187,7 @@ class SFTP {
 		// SSL connection
 		} elseif(function_exists("ftp_ssl_connect")) {
 			// attempt SSL connection
-			if(!static::$_stream = ftp_ssl_connect(static::$_host, static::$_port, static::$_timeout)) {
+			if(!static::$_stream = @ftp_ssl_connect(static::$_host, static::$_port, static::$_timeout)) {
 				// set last error
 				static::$error = "Failed to connect to {static::$_host} (SSL connection)";
 				return false;
@@ -199,7 +199,7 @@ class SFTP {
 		}
 
 		// attempt login
-		if(ftp_login(static::$_stream, static::$_user, static::$_pwd)) {
+		if(@ftp_login(static::$_stream, static::$_user, static::$_pwd)) {
 			// set passive mode
 			ftp_pasv(static::$_stream, (bool)static::$passive);
 
@@ -223,7 +223,7 @@ class SFTP {
 	 */
 	public function delete($remote_file = null) {
 		// attempt to delete file
-		if(ftp_delete(static::$_stream, $remote_file)) {
+		if(@ftp_delete(static::$_stream, $remote_file)) {
 			// success
 			return true;
 		// fail
@@ -243,7 +243,7 @@ class SFTP {
 	 */
 	public function get($remote_file = null, $local_file = null, $mode = FTP_ASCII) {
 		// attempt download
-		if(ftp_get(static::$_stream, $local_file, $remote_file, $mode)) {
+		if(@ftp_get(static::$_stream, $local_file, $remote_file, $mode)) {
 			// success
 			return true;
 		// download failed
@@ -263,7 +263,7 @@ class SFTP {
 		$list = array();
 
 		// attempt to get list
-		if($list = ftp_nlist(static::$_stream, $directory)) {
+		if($list = @ftp_nlist(static::$_stream, $directory)) {
 			// success
 			return $list;
 		// fail
@@ -281,7 +281,7 @@ class SFTP {
 	 */
 	public function mkdir($directory = null) {
 		// attempt to create dir
-		if(ftp_mkdir(static::$_stream, $directory)) {
+		if(@ftp_mkdir(static::$_stream, $directory)) {
 			// success
 			return true;
 		// fail
@@ -301,7 +301,7 @@ class SFTP {
 	 */
 	public function put($local_file = null, $remote_file = null, $mode = FTP_ASCII) {
 		// attempt to upload file
-		if(ftp_put(static::$_stream, $remote_file, $local_file, $mode)) {
+		if(@ftp_put(static::$_stream, $remote_file, $local_file, $mode)) {
 			// success
 			return true;
 		// upload failed
@@ -329,7 +329,7 @@ class SFTP {
 	 */
 	public function rename($old_name = null, $new_name = null) {
 		// attempt rename
-		if(ftp_rename(static::$_stream, $old_name, $new_name)) {
+		if(@ftp_rename(static::$_stream, $old_name, $new_name)) {
 			// success
 			return true;
 		// fail
@@ -347,7 +347,7 @@ class SFTP {
 	 */
 	public function rmdir($directory = null) {
 		// attempt remove dir
-		if(ftp_rmdir(static::$_stream, $directory)) {
+		if(@ftp_rmdir(static::$_stream, $directory)) {
 			// success
 			return true;
 		// fail
